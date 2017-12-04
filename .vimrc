@@ -7,15 +7,9 @@ set nocompatible
 " plugins under the ~/.vim/bundle directory
 runtime bundle/vim-pathogen/autoload/pathogen.vim
 filetype off
-call pathogen#helptags()
-call pathogen#infect()
+execute pathogen#helptags()
+execute pathogen#infect()
 filetype plugin indent on
-
-" Stuff for vimLatex
-set grepprg=grep\ -nH\ $*
-let g:tex_flavor = "latex"
-let g:Tex_DefaultTargetFormat="pdf"
-let g:Tex_MultipleCompileFormats="pdf"
 
 " enable syntax highlighting
 syntax enable
@@ -79,7 +73,7 @@ set wildignore=*.swp,*.bak,*.pyc,*.class
 set title                       " change the terminal's title
 set ls=2                         "Show filename at bottom
 "match ErrorMsg '\s\+$'          " Show trailing whitespace
-set listchars=tab:>~,nbsp:_,trail:.
+set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 set list
 
 " better menu autocompletion
