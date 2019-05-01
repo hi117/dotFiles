@@ -147,7 +147,11 @@ alias ls='ls --color=auto -F'
 alias pacman='pacman --color=auto'
 alias gdb='gdb -q'
 
-# extension based
+if [[ -S "${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh" ]]; then
+    export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh"
+fi
+
+# extention based
 alias -s c=vim
 
 #Stop sudo from being corrected
@@ -169,4 +173,32 @@ notes() {
     # it into our notes instead.
     cat - >> "$HOME/Documents/notes.md"
   fi
+}
+
+function tf () {
+    local COMMAND=${1?"Must specify command"}
+    shift
+    local ENV=${1?"Must specify env"}
+    shift
+    local IMAGE_TAG=$ENV
+    if [[ $# > 0 ]]; then
+        case "$1" in
+            -*) ;;
+            *)
+                IMAGE_TAG=$1
+                shift
+                ;;
+        esac
+    fi
+    echo "[terraform ${COMMAND}] env:${ENV} image_tag:${IMAGE_TAG} options: $@"
+    terraform init && terraform workspace select ${ENV} && terraform ${COMMAND} -var-file="./tfvars/${ENV}.tfvars" -var "image_tag=${IMAGE_TAG}" "$@"
+}
+alias tfapply="tf apply"
+alias tfplan="tf plan"
+alias tfdestroy="tf destroy"
+alias tfrefresh="tf refresh"
+alias git=hub
+export GITHUB_TOKEN=9112533e2e721d4224ce45555882d8d9edae3806
+tfdiff () {
+    diff -U10000 -w =(eval "echo $(xclip -o -selection primary | awk -F"=>" '{print $1}')" | jq '.[].environment |= (. | sort_by(.name))') =(eval "echo $(xclip -o -selection primary | awk -F"=>" '{print $2}')" | jq '.[].environment |= (. | sort_by(.name))')
 }
