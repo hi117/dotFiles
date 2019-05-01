@@ -7,7 +7,7 @@ set $mod Mod4
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec kitty
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -59,6 +59,9 @@ bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
+
+# toggle sticky windows to keep windows alive in workspaces
+bindsym $mod+o sticky toggle
 
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
@@ -116,19 +119,19 @@ mode "$mode_system" {
     bindsym Escape mode "default"
 }
 
-bindsym $mod+Pause mode "$mode_system"
+bindsym $mod+x mode "$mode_system"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
 
         # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
         bindsym h resize shrink width 10 px or 10 ppt
+        # Pressing right will grow the window’s width.
         bindsym j resize grow height 10 px or 10 ppt
+        # Pressing up will shrink the window’s height.
         bindsym k resize shrink height 10 px or 10 ppt
+        # Pressing down will grow the window’s height.
         bindsym l resize grow width 10 px or 10 ppt
 
         # same bindings, but for the arrow keys
@@ -157,37 +160,37 @@ font pango: Century Gothic 8
 hide_edge_borders both
 new_window pixel
 
-# i3 gaps configs
+# i3-gaps configs
 smart_gaps on
 smart_borders on
 gaps inner 2
-gaps outer  0
+gaps outer 0
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
-bar {
-    colors {
-        # Whole color settings
-        background #232323
-        statusline #DCDCDC
-        separator  #666666
-        # Type             border  background font
-        focused_workspace  #008fff #007fff #ffffff
-        active_workspace   #333333 #5f676a #ffffff
-        inactive_workspace #333333 #222222 #888888
-        urgent_workspace   #aa0000 #990000 #ffffff
-        }
-        # placement of the i3bar
-        position top
-        status_command      i3status
-        workspace_buttons   yes
-        tray_output         primary
-
+# bar {
+#     colors {
+#         # Whole color settings
+#         background #232323
+#         statusline #DCDCDC
+#         separator  #666666
+#         # Type             border  background font
+#         focused_workspace  #008fff #007fff #ffffff
+#         active_workspace   #333333 #5f676a #ffffff
+#         inactive_workspace #333333 #222222 #888888
+#         urgent_workspace   #aa0000 #990000 #ffffff
+#         }
+#         # placement of the i3bar
+#         position top
+#         status_command      i3status
+#         workspace_buttons   yes
+#         tray_output         primary
+# 
 #font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
-        font pango:Terminus Semi-Condensed 8
+#        font pango:Terminus Semi-Condensed 8
 #,DejaVu Sans Mono 10
-
-}
+#}
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
 # Pulse Audio controls
 # https://www.reddit.com/r/i3wm/comments/2wbv8x/question_how_to_manage_audio_with_i3/covp8jl/
@@ -197,14 +200,15 @@ bindsym XF86AudioMute           exec  pactl set-sink-mute 0 toggle # mute sound
 bindsym XF86AudioMicMute        exec  pactl set-source-mute 1 toggle # mute sound
 #
 ## Screen brightness controls
-bindsym XF86MonBrightnessUp exec xbacklight -inc 5 # increase screen brightness
-bindsym XF86MonBrightnessDown exec xbacklight -dec 5 # decrease screen brightness
+bindsym XF86MonBrightnessUp     exec xbacklight -inc 2 # increase screen brightness
+bindsym XF86MonBrightnessDown   exec xbacklight -dec 2 # decrease screen brightness
 
 # Startup programs
 # exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id libinput-gestures
 exec feh --bg-fill ~/.config/i3/Wallpaper.jpg
 exec --no-startup-id dropbox start
+exec --no-startup-id xss-lock $Locker
 
 # color setup
 # Class                 Border  backgr. text    indicator   child_border
@@ -212,4 +216,3 @@ client.focused          #3F8AC2 #096BAA #00BAA7 #00DA8E
 client.focused_inactive #333333 #5F676A #ffffff #484e50
 client.unfocused        #333333 #424242 #888888 #292d2e
 client.urgent           #C10004 #900000 #ffffff #900000
-
