@@ -6,4 +6,4 @@
 	url = https://github.com/hashivim/vim-terraform.git
 [submodule ".config/polybar/polybar-scripts"]
 	path = .config/polybar/polybar-scripts
-	url = git@github.com:x70b1/polybar-scripts.git
+	url = https://github.com/x70b1/polybar-scripts.git
