@@ -179,10 +179,6 @@ bar {
         }
 }
 
-# For scratchpad
-bindsym $mod+Shift+minus move scratchpad
-bindsym $mod+minus scratchpad show
-
 # Cleaner borders
 hide_edge_borders both
 new_window pixel
